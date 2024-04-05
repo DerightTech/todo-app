@@ -17,6 +17,7 @@ const App = () => {
             <div className="task-section">
               <h2 className="section-title">Add New Task</h2>
               <AddTask />
+              
             </div>
             <div className="task-section">
               <h2 className="section-title-one">All Tasks</h2>

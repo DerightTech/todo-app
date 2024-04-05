@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addTask } from '../Redux/Actions/action';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask, editTask } from '../Redux/Actions/action';
 
 //initializes a state variable taskDescription using the useState hook
 const AddTask = () => {
+    const isEditing = useSelector(state => state.isEditing);
+    const currentTask = useSelector(state => state.currentTask);
     const [taskDescription, setTaskDescription] = useState('');
     const dispatch = useDispatch(); //initializes the dispatch function using the useDispatch hook from react-redux
 
+    useEffect(() => {
+        setTaskDescription(isEditing ? currentTask.description : '')
+    }, [isEditing])
     //initializing the addtask button to trigger when click
-    const handleAddTask = () => {
+    const handleSubmitTask = () => {
         if (taskDescription.trim() !== '') {
         const newTask = {
-            id: Date.now(),
+            id: isEditing ? currentTask.id : Date.now(),
             description: taskDescription,
-            isDone: false,
+            isDone: isEditing ? currentTask.isDone : false,
         };
-        dispatch(addTask(newTask));
+        dispatch(isEditing ? editTask(newTask) : addTask(newTask));
         setTaskDescription('');
         }
     };
@@ -28,7 +33,10 @@ const AddTask = () => {
             value={taskDescription}
             onChange={event => setTaskDescription(event.target.value)}
         />
-        <button className='add-task-button' onClick={handleAddTask}>Add Task</button>
+        <button className='add-task-button' 
+            onClick={handleSubmitTask}>
+            {isEditing ? 'Edit Task' : 'Add Task'}
+        </button>
         </div>
     );
     };

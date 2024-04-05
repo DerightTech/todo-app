@@ -1,13 +1,17 @@
 // components/Task.js
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleTask } from '../Redux/Actions/action';
+import { toggleTask, toggleEdit } from '../Redux/Actions/action';
 
 const Task = ({ task }) => {
     const dispatch = useDispatch();
 
     const handleToggleTask = () => {
         dispatch(toggleTask(task.id));
+    };
+
+    const handleToggleEdit = () => {
+        dispatch(toggleEdit(task));
     };
 
     return (
@@ -18,6 +22,7 @@ const Task = ({ task }) => {
             onChange={handleToggleTask}
         />
         <span className='task-actions'>{task.description}</span>
+        <button onClick={handleToggleEdit}>Edit</button>
         </div>
     );
     };

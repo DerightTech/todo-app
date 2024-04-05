@@ -1,6 +1,8 @@
 // Define the initial state of the Redux store
 const initialState = {
     tasks: [],
+    currentTask: {},
+    isEditing: false
     };
     // Reducer function that handles state updates based on dispatched actions
     const rootReducer = (state = initialState, action) => {
@@ -21,9 +23,18 @@ const initialState = {
             ),
             };
             // Edit the description of a specific task
+        case 'TOGGLE_EDIT':
+            console.log('toggle', action.payload)
+            return {
+                ...state,
+                isEditing: !state.isEditing,
+                currentTask: !state.isEditing ? 
+                    state.tasks.find((t) => action.payload.id === t.id) : {}
+            };
         case 'EDIT_TASK':
             return {
             ...state,
+            isEditing: false,
             tasks: state.tasks.map(task =>
                 task.id === action.payload.id
                 ? { ...task, description: action.payload.description }
